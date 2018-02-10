@@ -1,0 +1,72 @@
+OUTPUT_FORMAT("elf32-littlearm")
+OUTPUT_ARCH(arm)
+
+MEMORY
+{
+	romall(rx)	: o = 0x00000000, l = 0x00008000 /* 16KB */
+	romvector(r)	: o = 0x00000000, l = 0x00000200 /* top of ROM */
+	rom(rx)		: o = 0x00000200, l = 0x00007e00
+
+	ramall(rwx)	: o = 0x10000000, l = 0x00001000 /* 4KB */
+	data(rw)	: o = 0x10000000, l = 0x00000800 /* 2KB */
+	userstack(rw)	: o = 0x10000800, l = 0x00000400 /* 1KB */	
+	stack(rw)	: o = 0x10000C00, l = 0x00000400 /* end of RAM */
+}
+
+SECTIONS
+{
+	.romvector : {
+		_romvector_start = . ;
+		*(.vector)
+		. = ALIGN(4);
+		_romvector_end = . ;
+	} > romvector
+
+	.text : {
+		_text_start = . ;
+		*(.text)
+		_etext = . ;
+	} > rom
+
+	.rodata : {
+		_rodata_start = . ;
+		*(.strings)
+		*(.rodata)
+		*(.rodata.*)
+		_erodata = . ;
+	} > rom
+
+	_data_org = . ;
+	.data : {
+		_data_start = . ;
+		*(.data)
+		. = ALIGN(4);
+		_data_end = . ;
+		_edata = . ;
+	} > data AT> rom
+
+	.bss : {
+		_bss_start = . ;
+		*(.bss)
+		*(COMMON)
+		. = ALIGN(4);
+		_bss_end = . ;
+		_ebss = . ;
+	} > data AT> rom
+
+	. = ALIGN(4);
+	_end = . ;
+
+	.freearea : {
+		_freearea = . ;
+	} > data
+
+	.userstack : {
+		_userstack = . ;
+	} > userstack
+
+	.stack : {
+		_process_stack = . + 0x0100;
+		_main_stack    = . + 0x0200;
+        } > stack
+}
