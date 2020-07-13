@@ -13,11 +13,7 @@ OBJDUMP = $(BINDIR)/$(ADDNAME)objdump
 RANLIB  = $(BINDIR)/$(ADDNAME)ranlib
 STRIP   = $(BINDIR)/$(ADDNAME)strip
 
-OBJS  = interrupt.o memory.o consdrv.o command.o
-OBJS += reset.o handler.o main.o
-OBJS += lib.o serial.o timer.o
-OBJS += os.o syscall.o
-OBJS += timestamp.o
+OBJS += reset.o main.o
 OBJS += vector.o
 
 TARGET = xiao
@@ -42,9 +38,6 @@ $(TARGET) :	$(OBJS)
 		cp $(TARGET) $(TARGET).elf
 		$(STRIP) $(TARGET)
 
-timestamp.c:
-		ruby -e 'print("const char timeStamp[]=\"", Time.now, "\";\n");' > timestamp.c
-
 .c.o :		$<
 		$(CC) -c $(CFLAGS) $<
 
@@ -64,6 +57,4 @@ image :		$(TARGET).hex
 		lpc21isp xiao.hex /dev/ttyUSB0 115200 12000
 clean :
 		rm -f $(OBJS) $(TARGET) $(TARGET).elf $(TARGET).mot $(TARGET).hex
-		rm timestamp.c
 		rm -f *~
-
