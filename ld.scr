@@ -9,8 +9,9 @@ MEMORY
 
 	ramall(rwx)	: o = 0x10000000, l = 0x00001000 /* 4KB */
 	data(rw)	: o = 0x10000000, l = 0x00000800 /* 2KB */
-	userstack(rw)	: o = 0x10000800, l = 0x00000400 /* 1KB */	
-	stack(rw)	: o = 0x10000C00, l = 0x00000400 /* end of RAM */
+	taskstack(rw)	: o = 0x10000800, l = 0x00000700 /* 1.5KB */	
+	bootstack(rw)	: o = 0x10000F00, l = 0x00000080 /* end of RAM */
+	stack(rw)	: o = 0x10000F80, l = 0x00000080 /* end of RAM */
 }
 
 SECTIONS
@@ -61,12 +62,15 @@ SECTIONS
 		_freearea = . ;
 	} > data
 
-	.userstack : {
-		_userstack = . ;
-	} > userstack
+	.taskstack : {
+		_task_stack = . ;
+	} > taskstack
+
+        .bootstack : {
+		_process_stack = . + 0x80;
+        } > bootstack
 
 	.stack : {
-		_process_stack = . + 0x0100;
-		_main_stack    = . + 0x0200;
+		_main_stack    = . + 0x80;
         } > stack
 }

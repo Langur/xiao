@@ -1,7 +1,7 @@
 /**
   itron.h
   
-  Copyright (c) 2013-2020 Akihisa ONODA
+  Copyright (c) 2013-2021 Akihisa ONODA
   
   This software is released under the MIT License.
   http://opensource.org/licenses/mit-license.php
@@ -10,7 +10,7 @@
 #ifndef __ITRON_H__
 #define __ITRON_H__
 
-#include "defines.h"
+#include <defines.h>
 
 /*
  * 一般定義
@@ -56,7 +56,7 @@ typedef	intptr_t		VP_INT;
 typedef int_t			ER_BOOL;
 typedef int_t			ER_ID;
 typedef int_t			ER_UINT;
-
+typedef uint_t			INHNO;
 /*
  * メインエラーコード
  */

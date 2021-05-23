@@ -1,7 +1,7 @@
 /**
   defines.h
   
-  Copyright (c) 2013-2020 Akihisa ONODA
+  Copyright (c) 2013-2021 Akihisa ONODA
   
   This software is released under the MIT License.
   http://opensource.org/licenses/mit-license.php
@@ -43,7 +43,12 @@ typedef unsigned long	uintptr_t;
 
 #define SYSMEMREMAP		((volatile unsigned long *)0x40048000)
 #define SYSAHBCLKCTRL		((volatile unsigned long *)0x40048080)
+#define ICSR			((volatile unsigned long *)0xe000ed04)
 
+#define PENDSVSET		(1 << 28)
+#define PENDSVCLR		(1 << 27)
 #define AHB_IOCON		(1 << 16)
+
+#define SERIAL_DEFAULT_DEVICE 0
 
 #endif /* __DEFINES_H__ */
