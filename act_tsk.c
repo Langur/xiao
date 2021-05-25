@@ -99,7 +99,7 @@ act_tsk_common(ID tskid, UW flg)
 	task_control_blocks[idx].ctx.sp = (VP_INT)sp;
 
 	/* readyqueueに繋ぐ */
-	ret = task_push_queue(&(task_control_blocks[idx]));
+	ret = task_change_state(&(task_control_blocks[idx]), TA_TSK_STAT_READY);
 
 	if (flg & TA_SCF_CALL_DISPATCH) {
 		/* dispatch */

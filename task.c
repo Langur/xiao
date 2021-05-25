@@ -31,6 +31,9 @@ T_SERVICE_CALL init_service_call = {0, NULL};
 const UW task_state_offset = (UW)(&((T_TCB *)0)->state);
 const UW task_context_offset = (UW)(&((T_TCB *)0)->ctx);
 
+static ER task_push_queue(T_TCB *tcbp);
+static ER task_remove_queue(T_TCB *tcbp);
+
 void
 task_init(void)
 {
@@ -53,8 +56,35 @@ task_terminate(void)
 	}
 }
 
-
 ER
+task_change_state(T_TCB *tcbp, STAT state)
+{
+	ER ret = E_OK;
+
+	if (tcbp == NULL) {
+		return E_NOEXS;
+	}
+
+	if (tcbp->state == TA_TSK_STAT_READY &&
+	    state != TA_TSK_STAT_READY) {
+		ret = task_remove_queue(tcbp);
+	} else if ((tcbp->state == TA_TSK_STAT_DORMANT &&
+		    state == TA_TSK_STAT_READY) ||
+		   (tcbp->state == TA_TSK_STAT_WAITING &&
+		    state == TA_TSK_STAT_READY) ||
+		   (tcbp->state == TA_TSK_STAT_SUSPENDED &&
+		    state == TA_TSK_STAT_READY)) {
+		ret = task_push_queue(tcbp);
+	} else {
+		;
+	}
+
+	tcbp->state = state;
+
+	return ret;
+}
+
+static ER
 task_push_queue(T_TCB *tcbp)
 {
 	UW idx;
@@ -75,12 +105,11 @@ task_push_queue(T_TCB *tcbp)
 		task_ready_queue[idx].head = tcbp;
 	}
 	task_ready_queue[idx].tail = tcbp;
-	tcbp->state = TA_TSK_STAT_READY;
 
 	return E_OK;
 }
 
-ER
+static ER
 task_remove_queue(T_TCB *tcbp)
 {
 	UW idx;
@@ -95,7 +124,6 @@ task_remove_queue(T_TCB *tcbp)
 	}
 
 	idx = TPRI_IDX(tcbp->npri);
-	tcbp->state = TA_TSK_STAT_DORMANT;
 	prev = NULL;
 	for (curr = task_ready_queue[idx].head; curr; prev = curr, curr = curr->next) {
 		if (curr == tcbp) {

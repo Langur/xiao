@@ -18,6 +18,9 @@
 #define TA_TSK_STAT_RUNNING		(1)
 #define TA_TSK_STAT_READY		(2)
 #define TA_TSK_STAT_DORMANT		(3)
+#define TA_TSK_STAT_WAITING		(4)
+#define TA_TSK_STAT_SUSPENDED		(5)
+#define TA_TSK_STAT_WAITING_SUSPENDED	(6)
 
 typedef struct t_tctx {
 	UW sp;
@@ -61,8 +64,7 @@ void task_init(void);
 void task_execute(T_TCB *tcbp);
 void task_terminate(void);
 void task_get_current(void);
-ER task_push_queue(T_TCB *tcbp);
-ER task_remove_queue(T_TCB *tcbp);
+ER task_change_state(T_TCB *tcbp, STAT state);
 ER task_rotate_queue(PRI tskpri);
 void task_schedule(void);
 void task_reschedule(void);

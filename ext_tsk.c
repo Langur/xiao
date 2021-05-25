@@ -20,7 +20,7 @@ ext_tsk(void)
 {
 	U_SPRM prm;
 
-	prm.ext_tsk.tcb   = task_running;
+	prm.ext_tsk.tcb = task_running;
 
 	service_call(SCID_EXT_TSK, &prm);
 	
@@ -30,6 +30,6 @@ ext_tsk(void)
 void
 ext_tsk_body(VP tcbp)
 {
-	task_remove_queue((T_TCB *)tcbp);
-	task_terminate();
+	task_change_state((T_TCB *)tcbp, TA_TSK_STAT_DORMANT);
+        task_reschedule();
 }
