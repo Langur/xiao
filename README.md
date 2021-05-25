@@ -36,10 +36,16 @@ lpc21isp xiao.hex /dev/ttyUSB0 115200 12000
 
 # サポートしているサービスコール
 
-CRE_TSK()
-DEF_INH()
-act_tsk()
-ext_tsk()
+- CRE_TSK()
+- DEF_INH()
+- act_tsk()
+- ext_tsk()
+- get_pri()
+- get_tid()
+- rot_rdq()
+- iact_tsk()
+- iget_tid()
+- irot_rdq()
  
 CRE_TSK()とDEF_INH()はsystem.cfgに定義します。
 割り込みハンドラIDのマクロはinterrupt_id.hに定義します。

@@ -25,8 +25,13 @@ cre_tsk_body(ID tskid, T_CTSK *pk_ctsk)
 	UW *p_task_stack;
 	SIZE len;
 	int idx = TSKID_IDX(tskid);
+        UW flg = 0;
+
+        TA_SCF_BIT_DISABLE(flg, TA_SCF_CALL_DISPATCH);
 	
 	task_control_blocks[idx].next  = NULL;
+
+	task_control_blocks[idx].tskid = tskid;
 	task_control_blocks[idx].bpri  = pk_ctsk->itskpri;
 	task_control_blocks[idx].npri  = 0;
 
@@ -44,7 +49,7 @@ cre_tsk_body(ID tskid, T_CTSK *pk_ctsk)
 	task_control_blocks[idx].stksz = pk_ctsk->stksz;
 
 	if ((pk_ctsk->tskatr & TA_ACT) > 0) {
-		act_tsk_common(tskid, 0);
+		act_tsk_common(tskid, flg);
 	}
 	
 	return E_OK;

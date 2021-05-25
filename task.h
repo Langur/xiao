@@ -15,9 +15,9 @@
 #include <kernel.h>
 #include <service_call.h>
 
-#define TA_TSK_STAT_RUNNING	(1)
-#define TA_TSK_STAT_READY	(2)
-#define TA_TSK_STAT_DORMANT	(3)
+#define TA_TSK_STAT_RUNNING		(1)
+#define TA_TSK_STAT_READY		(2)
+#define TA_TSK_STAT_DORMANT		(3)
 
 typedef struct t_tctx {
 	UW sp;
@@ -30,6 +30,7 @@ typedef struct t_service_call {
 
 typedef struct t_tcb {
 	struct t_tcb *next;
+	ID tskid;
 	PRI bpri;
 	PRI npri;
 	VP stk;
@@ -62,6 +63,7 @@ void task_terminate(void);
 void task_get_current(void);
 ER task_push_queue(T_TCB *tcbp);
 ER task_remove_queue(T_TCB *tcbp);
+ER task_rotate_queue(PRI tskpri);
 void task_schedule(void);
 void task_reschedule(void);
 void task_dispatch(void);

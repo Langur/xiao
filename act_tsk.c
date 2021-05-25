@@ -34,8 +34,11 @@ ER
 act_tsk_body(ID tskid)
 {
 	ER ret;
+	UW flg = 0;
 
-	ret = act_tsk_common(tskid, 1);
+	TA_SCF_BIT_ENABLE(flg, TA_SCF_CALL_DISPATCH);
+
+	ret = act_tsk_common(tskid, flg);
 
 	return ret;
 }
@@ -57,8 +60,11 @@ ER
 iact_tsk_body(ID tskid)
 {
 	ER ret;
+	UW flg = 0;
+
+	TA_SCF_BIT_ENABLE(flg, TA_SCF_CALL_DISPATCH);
 	
-	ret = act_tsk_common(tskid, 1);
+	ret = act_tsk_common(tskid, flg);
 
 	return ret;
 }
@@ -95,7 +101,7 @@ act_tsk_common(ID tskid, UW flg)
 	/* readyqueueに繋ぐ */
 	ret = task_push_queue(&(task_control_blocks[idx]));
 
-	if (flg) {
+	if (flg & TA_SCF_CALL_DISPATCH) {
 		/* dispatch */
 		task_reschedule();
 	}

@@ -35,6 +35,7 @@
 /*
  * カーネル共通構成定数(優先度)
  */
+#define	TPRI_SELF		(0)		/* 自タスクの優先度 */
 #define	TMIN_TPRI		(1)		/* タスク優先度の最小値 */
 #define	TMAX_TPRI		(4)		/* タスク優先度の最大値 */
 #define	TPRI_LOW		TMAX_TPRI
@@ -71,7 +72,11 @@
 #define TFN_EXD_TSK		(-(0x0b))
 #define TFN_TER_TSK		(-(0x0c))
 #define TFN_CHG_PRI		(-(0x0d))
+#define TFN_GET_TID		(-(0x56))
+#define TFN_IGET_TID		(-(0x7a))
 #define TFN_GET_PRI		(-(0x0e))
+#define TFN_ROT_RDQ		(-(0x55))
+#define TFN_IROT_RDQ		(-(0x79))
 #define TFN_REF_TSK		(-(0x0f))
 #define TFN_REF_TST		(-(0x10))
 
@@ -118,5 +123,20 @@ typedef struct t_dinh {
 ER act_tsk(ID tskid);
 ER iact_tsk(ID tskid);
 void ext_tsk(void);
+#ifdef TFN_GET_TID
+ER get_tid(ID *p_tskid);
+#endif /* TFN_GET_TID */
+#ifdef TFN_IGET_TID
+ER iget_tid(ID *p_tskid);
+#endif /* TFN_IGET_TID */
+#ifdef TFN_GET_PRI
+ER get_pri(ID tskid, PRI *p_tskpri);
+#endif /* TFN_GET_PRI */
+#if defined TFN_ROT_RDQ && defined TFN_GET_TID
+ER rot_rdq(PRI tskpri);
+#endif /* TFN_ROT_RDQ  && TFN_GET_TID*/
+#ifdef TFN_IROT_RDQ
+ER irot_rdq(PRI tskpri);
+#endif /* TFN_IROT_RDQ */
 
 #endif /* __KERNEL_H__ */

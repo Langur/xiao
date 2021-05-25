@@ -17,9 +17,5 @@
 void
 task_idle(VP_INT extif)
 {
-	act_tsk(TSKID_TASK1);
-	
-	while (1) {
-	        asm volatile ("wfi");
-	}
+	;
 }

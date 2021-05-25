@@ -20,10 +20,10 @@ OBJS += kernel_cfg.o kernel_id.h
 OBJS += reset.o main.o interrupt.o handler.o task.o service_call.o
 
 ## API
-OBJS += act_tsk.o cre_tsk.o def_inh.o ext_tsk.o
+OBJS += act_tsk.o cre_tsk.o def_inh.o ext_tsk.o get_tid.o get_pri.o rot_rdq.o
 
 ## Task
-OBJS += idle.o task1.o task2.o
+OBJS += idle.o sample.o
 
 ## Library
 OBJS += lib.o timestamp.o

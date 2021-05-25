@@ -1,5 +1,5 @@
 /**
-  act_tsk.c
+  service_call.c
   
   Copyright (c) 2013-2021 Akihisa ONODA
   
@@ -63,17 +63,41 @@ iservice_call_proc(enum service_call_id id, U_SPRMP prmp)
 static void
 service_call_body(enum service_call_id id, U_SPRMP prmp)
 {
-	switch (id) {
-	case SCID_ACT_TSK:
+	if (id == SCID_ACT_TSK) {
 		prmp->act_tsk.ret = act_tsk_body(prmp->act_tsk.tskid);
-		break;
-	case SCID_IACT_TSK:
+	}
+	else if (id == SCID_IACT_TSK) {
 		prmp->iact_tsk.ret = iact_tsk_body(prmp->iact_tsk.tskid);
-		break;
-	case SCID_EXT_TSK:
+	}
+	else if (id == SCID_EXT_TSK) {
 		ext_tsk_body(prmp->ext_tsk.tcb);
-		break;
-	default:
-		break;
+	}
+#ifdef TFN_GET_TID
+	else if (id == SCID_GET_TID) {
+		prmp->get_tid.ret = get_tid_body(&(prmp->get_tid.tskid));
+	}
+#endif /* TFN_GET_TID */
+#ifdef TFN_IGET_TID
+	else if (id == SCID_IGET_TID) {
+		prmp->iget_tid.ret = iget_tid_body(&(prmp->get_tid.tskid));
+	}
+#endif /* TFN_IGET_TID */
+#ifdef TFN_GET_PRI
+	else if (id == SCID_GET_PRI) {
+		prmp->get_pri.ret = get_pri_body(prmp->get_pri.tskid, &(prmp->get_pri.tskpri));
+	}
+#endif /* TFN_GET_PRI */
+#ifdef TFN_ROT_RDQ
+	else if (id == SCID_ROT_RDQ) {
+		prmp->rot_rdq.ret = rot_rdq_body(prmp->rot_rdq.tskpri);
+	}
+#endif /* TFN_ROT_RDQ */
+#ifdef TFN_IROT_RDQ
+	else if (id == SCID_IROT_RDQ) {
+		prmp->irot_rdq.ret = irot_rdq_body(prmp->irot_rdq.tskpri);
+	}
+#endif /* TFN_IROT_RDQ */
+	else {
+		;
 	}
 }

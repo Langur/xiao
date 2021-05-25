@@ -118,6 +118,30 @@ task_remove_queue(T_TCB *tcbp)
 	return E_OK;
 }
 
+ER
+task_rotate_queue(PRI tskpri)
+{
+	UW idx;
+	T_TCB *tcbp;
+
+	idx = TPRI_IDX(tskpri);
+
+	if (task_ready_queue[idx].head == NULL ||
+	    task_ready_queue[idx].tail == NULL) {
+		return E_PAR;
+	}
+
+	if (task_ready_queue[idx].head != task_ready_queue[idx].tail) {
+		tcbp = task_ready_queue[idx].head;
+		task_ready_queue[idx].head = task_ready_queue[idx].head->next;
+		task_ready_queue[idx].tail->next = tcbp;
+		task_ready_queue[idx].tail = tcbp;
+		tcbp->next = NULL;
+	}
+
+	return E_OK;
+}
+
 void
 task_schedule(void)
 {
