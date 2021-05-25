@@ -36,6 +36,18 @@ enum service_call_id {
 #ifdef TFN_IROT_RDQ
 	SCID_IROT_RDQ,
 #endif /* TFN_IROT_RDQ */
+#ifdef TFN_SLP_TSK
+	SCID_SLP_TSK,
+#endif /* TFN_SLP_TSK */
+#ifdef TFN_TSLP_TSK
+	SCID_TSLP_TSK,
+#endif /* TFN_TSLP_TSK */
+#ifdef TFN_WUP_TSK
+	SCID_WUP_TSK,
+#endif /* TFN_WUP_TSK */
+#ifdef TFN_IWUP_TSK
+	SCID_IWUP_TSK,
+#endif /* TFN_IWUP_TSK */
 	SCID_NUM
 };
 
@@ -89,6 +101,35 @@ typedef union {
 		PRI tskpri;
 	} irot_rdq;
 #endif /* TFN_IROT_RDQ */
+
+#ifdef TFN_SLP_TSK
+	struct {
+		ER ret;
+		ID tskid;
+	} slp_tsk;
+#endif /* TFN_SLP_TSK */
+
+#ifdef TFN_TSLP_TSK
+	struct {
+		ER ret;
+		ID tskid;
+		TMO tmout;
+	} tslp_tsk;
+#endif /* TFN_TSLP_TSK */
+
+#ifdef TFN_WUP_TSK
+	struct {
+		ER ret;
+		ID tskid;
+	} wup_tsk;
+#endif /* TFN_WUP_TSK */
+
+#ifdef TFN_IWUP_TSK
+	struct {
+		ER ret;
+		ID tskid;
+	} iwup_tsk;
+#endif /* TFN_IWUP_TSK */
 } U_SPRM;
 
 typedef U_SPRM			*U_SPRMP;
@@ -124,13 +165,28 @@ ER get_tid_common(ID *p_tskid);
 #ifdef TFN_GET_PRI
 ER get_pri_body(ID tskid, PRI *p_tskpri);
 #endif /* TFN_GET_PRI */
-#ifdef TFN_ROT_RDQ
+#if defined TFN_ROT_RDQ && defined TFN_GET_TID
 ER rot_rdq_body(PRI tskpri);
-#endif /* TFN_ROT_RDQ */
+#endif /* TFN_ROT_RDQ && defined TFN_GET_TID */
 #ifdef TFN_IROT_RDQ
 ER irot_rdq_body(PRI tskpri);
 #endif /* TFN_IROT_RDQ */
 #if defined TFN_ROT_RDQ || defined TFN_IROT_RDQ
 ER rot_rdq_common(PRI tskpri, UW flg);
 #endif /* TFN_ROT_RDQ || TFN_IROT_RDQ */
+#ifdef TFN_SLP_TSK
+ER slp_tsk_body(ID tskid);
+#endif /* TFN_SLP_TSK */
+#ifdef TFN_TSLP_TSK
+ER tslp_tsk_body(ID tskid, TMP tmout);
+#endif /* TFN_TSLP_TSK */
+#if defined TFN_WUP_TSK && defined TFN_GET_TID
+ER wup_tsk_body(ID tskid);
+#endif /* TFN_WUP_TSK && TFN_GET_TID */
+#ifdef TFN_IWUP_TSK
+ER iwup_tsk_body(ID tskid);
+#endif /* TFN_IWUP_TSK */
+#if defined TFN_WUP_TSK || defined TFN_IWUP_TSK
+ER wup_tsk_common(ID tskid, UW flg);
+#endif /* TFN_WUP_TSK || TFN_IWUP_TSK */
 #endif /* __SERVICE_CALL_H__ */

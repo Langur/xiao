@@ -43,9 +43,12 @@ lpc21isp xiao.hex /dev/ttyUSB0 115200 12000
 - get_pri()
 - get_tid()
 - rot_rdq()
+- slp_tsk()
+- wup_tsk()
 - iact_tsk()
 - iget_tid()
 - irot_rdq()
+- iwup_tsk()
  
 CRE_TSK()とDEF_INH()はsystem.cfgに定義します。
 割り込みハンドラIDのマクロはinterrupt_id.hに定義します。

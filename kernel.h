@@ -59,6 +59,12 @@
 #define	TMAX_ACTCNT		(1)		/* 起動要求キューイング数の最大値 */
 
 /*
+ * カーネル構成定数(タスク付属同期機能)
+ */
+#define	TMAX_WUPCNT		(0)		/* 起床要求キューイングをサポートしない */
+//#define	TMAX_SUSCNT		(1)		/* 強制待ち要求ネスト数の最大値 */
+
+/*
  * 機能コード
  */
 #define TFN_CRE_TSK		(-(0x05))
@@ -77,6 +83,10 @@
 #define TFN_GET_PRI		(-(0x0e))
 #define TFN_ROT_RDQ		(-(0x55))
 #define TFN_IROT_RDQ		(-(0x79))
+#define TFN_SLP_TSK		(-(0x11))
+//#define TFN_TSLP_TSK		(-(0x12))
+#define TFN_WUP_TSK		(-(0x13))
+#define TFN_IWUP_TSK		(-(0x72))
 //#define TFN_REF_TSK		(-(0x0f))
 //#define TFN_REF_TST		(-(0x10))
 
@@ -134,9 +144,21 @@ ER get_pri(ID tskid, PRI *p_tskpri);
 #endif /* TFN_GET_PRI */
 #if defined TFN_ROT_RDQ && defined TFN_GET_TID
 ER rot_rdq(PRI tskpri);
-#endif /* TFN_ROT_RDQ  && TFN_GET_TID*/
+#endif /* TFN_ROT_RDQ  && TFN_GET_TID */
 #ifdef TFN_IROT_RDQ
 ER irot_rdq(PRI tskpri);
 #endif /* TFN_IROT_RDQ */
+#ifdef TFN_SLP_TSK
+ER slp_tsk(void);
+#endif /* TFN_SLP_TSK */
+#ifdef TFN_TSLP_TSK
+ER tslp_tsk(TMO tmout);
+#endif /* TFN_TSLP_TSK */
+#if defined TFN_WUP_TSK && defined TFN_GET_TID
+ER wup_tsk(ID tskid);
+#endif /* TFN_WUP_TSK && TFN_GET_TID */
+#ifdef TFN_IWUP_TSK
+ER iwup_tsk(ID tskid);
+#endif /* TFN_IWUP_TSK */
 
 #endif /* __KERNEL_H__ */

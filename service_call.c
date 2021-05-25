@@ -97,6 +97,26 @@ service_call_body(enum service_call_id id, U_SPRMP prmp)
 		prmp->irot_rdq.ret = irot_rdq_body(prmp->irot_rdq.tskpri);
 	}
 #endif /* TFN_IROT_RDQ */
+#ifdef TFN_SLP_TSK
+	else if (id == SCID_SLP_TSK) {
+		prmp->slp_tsk.ret = slp_tsk_body(prmp->slp_tsk.tskid);
+	}
+#endif /* TFN_SLP_TSK */
+#ifdef TFN_TSLP_TSK
+	else if (id == SCID_TSLP_TSK) {
+		prmp->tslp_tsk.ret = tslp_tsk_body(prmp->slp_tsk->tskid, prmp->slp_tsk->tmout);
+	}
+#endif /* TFN_TSLP_TSK */
+#ifdef TFN_WUP_TSK
+	else if (id == SCID_WUP_TSK) {
+		prmp->wup_tsk.ret = wup_tsk_body(prmp->wup_tsk.tskid);
+	}
+#endif /* TFN_WUP_TSK */
+#ifdef TFN_IWUP_TSK
+	else if (id == SCID_IWUP_TSK) {
+		prmp->iwup_tsk.ret = iwup_tsk_body(prmp->iwup_tsk.tskid);
+	}
+#endif /* TFN_IWUP_TSK */
 	else {
 		;
 	}
